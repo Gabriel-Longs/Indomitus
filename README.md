@@ -1,6 +1,11 @@
 # Petrus
 Proposta de trabalho de gradução para conclusão do curso de Análise e Desenvolvimento de Sistema na Fatec Franca - Faculdade de Tecnologia de Franca Dr Thomaz Novelino
 
+# **Desenvolvedores:** 
+- Gabriel Longuini da Silva
+- Israel Fonseca Pessoni
+
+
 ### **Nome Fantasia:**
 Petrus 
 
