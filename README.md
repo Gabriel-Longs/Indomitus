@@ -1,4 +1,4 @@
-# Petrus
+# Indomitus
 Proposta de trabalho de gradução para conclusão do curso de Análise e Desenvolvimento de Sistema na Fatec Franca - Faculdade de Tecnologia de Franca Dr Thomaz Novelino
 
 # **Desenvolvedores:** 
@@ -7,22 +7,22 @@ Proposta de trabalho de gradução para conclusão do curso de Análise e Desenv
 
 
 ### **Nome Fantasia:**
-Petrus 
+**Indomitus**
 
 ### **Segmento:**
-sistema de software de postos de combustíveis.
+App de acompanhamento de treinos.
 
 ### **Missão:**
-Fornecer a médios e pequenos empresários do ramo de postos de combustíveis, um sistema ERP intuitivo, com o objetivo de auxiliar na gestão e geração de resultados  
+"Democratizar o acesso à saúde e ao bem-estar através de uma experiência fitness simples, intuitiva e totalmente personalizada para a rotina de cada pessoa."   
 
 ### **Visão:**
-Se consolidar no mercado como uma referencia de sistema ERP do ramo.
+"Consolidar-se como a plataforma fitness mais querida e eficiente do mercado, sendo referência em experiência do usuário (UX) e resultados reais para a saúde."
 
 ### **Valores:**
-- Integridade Inegociável: Atuar com ética, transparência e total conformidade com as leis vigentes em todas as nossas relações.
+- Bem-estar Integral: Colocar a saúde física e mental acima de padrões estéticos.
 
-- Simplicidade que Gera Valor: Focar no que é intuitivo e prático, eliminando a complexidade da gestão diária.
+- Simplicidade Direcionada: Eliminar barreiras para que o exercício seja acessível a todos.
 
-- Compromisso com o Cliente: O sucesso do nosso parceiro é o combustível que move o nosso negócio.
+- Inclusão e Igualdade: Criar um ambiente seguro e acolhedor para todos os perfis de usuários.
 
-- Excelência em Dados: Rigor técnico e precisão para garantir a segurança das informações e a saúde financeira do negócio.
+- Excelência no Desempenho: Compromisso com uma tecnologia fluida e eficaz
