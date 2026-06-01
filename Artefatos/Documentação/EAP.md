@@ -1,6 +1,6 @@
 # Estrutura Analítica do Projeto (EAP)
 
-📦 **Indomitus MVP**
+**Indomitus MVP**
 ├── **1. Módulo Core Mobile**
 │   ├── 1.1 Sistema de Autenticação (Login Simples/Google)
 │   ├── 1.2 Navegação Base e Interface (UX/UI)
