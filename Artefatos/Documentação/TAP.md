@@ -2,7 +2,7 @@
 
 ## 1. Informações Básicas
 - **Nome Oficial:** Indomitus
-- **Sponsor(s):** Dupla de responsáveis/fundadores (em consenso).
+- **Sponsor(s):** Israel Pessoni e Gabriel Lomguini.
 
 ## 2. Justificativa do Projeto
 A dificuldade de acesso a treinos altamente personalizados, seja por barreiras financeiras para contratação de personal trainers ou por aplicativos muito genéricos, desmotiva a prática regular de exercícios. O Indomitus surge para cobrir essa lacuna através de IA.
