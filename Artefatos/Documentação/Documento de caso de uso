@@ -1,0 +1,115 @@
+# DOCUMENTO DE CASO DE USO
+
+## 1. Escopo e Definição do Projeto (MVP)
+
+O sistema **Indomitus** é uma plataforma inteligente voltada à saúde e ao condicionamento físico. O grande diferencial competitivo do MVP reside na geração de treinos hiper-personalizados por meio de um modelo de linguagem local (**IA Gemma**), mitigando alucinações através da arquitetura **RAG (Busca Recuperada e Aumentada)** conectada a uma biblioteca proprietária de exercícios. 
+
+O ecossistema garante total privacidade dos dados sensíveis em conformidade com a **LGPD (Lei Geral de Proteção de Dados)** e integra um ecossistema inicial de nutrição (marketplace).
+
+---
+
+## 2. Arquitetura de Dados e Segurança
+
+### Camada de Persistência
+* **Banco de Dados:** Estrutura de banco de dados relacional utilizando **PostgreSQL**.
+
+### Segmentação de Dados
+* **Repositório de Exercícios:** Biblioteca técnica homologada contendo fotos, vídeos e metadados.
+* **Data Lake de Evolução:** Histórico de cargas, medidas antropométricas e feedbacks qualitativos.
+
+### Privacidade e LGPD
+* O processamento do modelo Gemma ocorre **localmente no servidor**. 
+* Dados sensíveis de saúde oriundos da anamnese **não são compartilhados** com APIs externas de terceiros, assegurando conformidade estrita com as diretrizes de proteção a dados sensíveis de saúde.
+
+---
+
+## 3. Especificação Completa dos Casos de Uso (UML)
+
+### Matriz de Atores
+| Ator | Tipo | Descrição |
+| :--- | :--- | :--- |
+| **Aluno / Usuário** | Primário | Interage com a interface do aplicativo para cadastrar-se, responder questionários, visualizar rotinas e registrar o progresso dos treinos. |
+| **IA / Sistema (Gemma)** | Secundário | Serviço computacional inteligente que consome os dados do banco e as variáveis de contexto para estruturar as cargas, repetições e periodização de treino. |
+
+---
+
+### Fluxos dos Casos de Uso
+
+#### UC01 – Realizar Login / Cadastro
+* **Atores:** Aluno/Usuário
+* **Pré-condições:** Nenhuma.
+* **Pós-condições:** Sessão do usuário autenticada e token de acesso ativo.
+* **Fluxo Principal:**
+  1. O usuário abre o aplicativo Indomitus.
+  2. O usuário escolhe autenticar-se via credenciais tradicionais (e-mail/senha) ou por meio de provedores externos (*Social Login*).
+  3. O sistema valida as informações de segurança no banco de dados.
+  4. Se for identificado como um novo usuário, o sistema dispara o gatilho para o **UC02**. Caso contrário, renderiza o Dashboard principal.
+
+#### UC02 – Realizar Onboarding
+* **Atores:** Aluno/Usuário
+* **Pré-condições:** Usuário autenticado e identificado em seu primeiro acesso à plataforma.
+* **Pós-condições:** Termos legais aceitos, perfil biométrico mapeado e gatilho de inteligência inicial disparado.
+* **Fluxo Principal:**
+  1. O sistema inicia a interface guiada de integração (*Onboarding*).
+  2. O sistema executa o caso de uso obrigatório **Aprovar LGPD**.
+  3. O sistema executa o caso de uso obrigatório **Responder Anamnese**.
+  4. Após a validação dos dados inseridos, o sistema invoca de forma assíncrona o **UC03** em segundo plano.
+  5. O usuário é redirecionado para a tela inicial do aplicativo com a conta ativa.
+* **Casos de Uso Incluídos (`<<include>>`):**
+  * **Aprovar LGPD:** Apresentação explícita dos Termos de Uso e Políticas de Privacidade sobre manipulação de dados de saúde. O aceite formal é mandatório para a liberação das demais funções.
+  * **Responder Anamnese:** Coleta interativa de dados antropométricos/biométricos, nível de experiência motora, limitação ou lesões ortopédicas prévias e objetivos macro (hipertrofia, emagrecimento, etc.).
+
+#### UC03 – Gerar Treino Personalizado
+* **Atores:** IA (Gemma) / Sistema
+* **Pré-condições:** Presença de dados biométricos estruturados no banco de dados.
+* **Pós-condições:** Grade de treinos, divisão de agrupamentos musculares, séries e repetições salvas no banco e atribuídas ao aluno.
+* **Fluxo Principal:**
+  1. O sistema recebe a requisição de montagem ou atualização de treino.
+  2. O sistema executa o caso obrigatório **Buscar Exercícios no BD** (mecanismo RAG).
+  3. O sistema executa o caso obrigatório **Processar Contexto**.
+  4. O modelo local IA Gemma ingere o contexto gerado pelas etapas anteriores, monta a periodização lógica e retorna a estrutura técnica do plano.
+  5. O sistema persiste com a nova ficha de treinos no **PostgreSQL**.
+* **Casos de Uso Incluídos (`<<include>>`):**
+  * **Buscar Exercícios no BD:** Consulta filtrada e semântica à biblioteca proprietária do Indomitus para garantir que o modelo utilize exclusivamente exercícios físicos previamente validados por profissionais.
+  * **Processar Contexto:** Conversão dos dados em formato de vetores descritivos (*embeddings*) contendo as restrições médicas e preferências físicas coletadas, garantindo a segurança clínica do plano.
+
+#### UC04 – Visualizar Treino do Dia e Executar o Treino
+* **Atores:** Aluno/Usuário
+* **Pré-condições:** Existência de um plano de treino ativo gerado pelo **UC03**.
+* **Pós-condições:** Registro de volume de cargas e dados de fadiga armazenados no Data Lake.
+* **Fluxo de Execução:**
+  1. O aluno acessa a interface central do app e visualiza o cronograma correspondente à data atual.
+  2. O aluno aciona o comando para iniciar a sessão física de exercícios.
+  3. Durante o treino, o usuário utiliza o cronômetro nativo do aplicativo para gerenciar os intervalos de recuperação muscular.
+  4. O usuário realiza a digitação progressiva do volume movimentado no *Log de Cargas* (multiplicação de peso x repetições).
+  5. Ao finalizar o treino, o sistema calcula a estimativa calórica gasta com base no **MET (Equivalente Metabólico)** específico de cada exercício e encerra a rotina.
+
+#### UC05 – Responder Checkpoint
+* **Atores:** Aluno/Usuário
+* **Pré-condições:** O usuário deve possuir um treino em andamento com dados parciais de execução registrados.
+* **Pós-condições:** Dados qualitativos de aderência ao treino consolidados.
+* **Fluxo Principal:**
+  1. Na metade do ciclo estipulado da periodização, o sistema disponibiliza a interface do Checkpoint.
+  2. O aluno preenche os indicadores qualitativos informando presença de desconfortos, dores nas articulações ou percepção de falta de adaptação às cargas sugeridas.
+  3. O sistema analisa e armazena os dados coletados.
+* **Extensão do Sistema (`<<extend>>` – Reformular Treino):**
+  * **Ponto de Extensão:** Respostas do Checkpoint acusam score crítico de dor ou inadaptação anatômica.
+  * **Fluxo do Gatilho:** Sob essa condição, o caso de uso *Reformular Treino* é ativado de forma adjacente. A IA intercepta as dores relatadas, cruza com o contexto clínico e recalibra a ficha técnica imediatamente, substituindo os movimentos lesivos por alternativas anatômicas equivalentes.
+
+#### UC06 – Sugerir Nova Periodização
+* **Atores:** IA (Gemma)
+* **Pré-condições:** Conclusão do ciclo temporal padrão (90 dias) ou detecção estatística de platô de desempenho através do Log de Cargas.
+* **Pós-condições:** Novo bloco estratégico (Ex: transição de resistência para hipertrofia) disponível para aceitação.
+* **Fluxo Principal:**
+  1. O microsserviço da IA faz a varredura automática no *Data Lake de Evolução* do aluno.
+  2. Avalia-se a curva de sobrecarga progressiva e o status de treinos finalizados versus iniciados.
+  3. O modelo Gemma computa uma quebra de platô estruturando um macrociclo inédito de periodização.
+  4. O app emite um alerta para o aluno contendo a análise da evolução e a nova proposta para início do próximo ciclo.
+
+---
+
+## 4. Requisitos Adicionais Mapeados (Backlog de Produto)
+
+* **Sistema de Engajamento:** Disparo de notificações inteligentes (*push notifications*) operando sob regras de gatilhos motivacionais e recuperação de hábitos baseados no histórico de login do aluno.
+* **UX de Carregamento:** Exibição de tutorial interativo e explicativo sobre os conceitos e ciclos de periodização enquanto a IA local realiza a inferência assíncrona do treino.
+* **Marketplace Nutricional:** Vitrine integrada de especialistas com suporte a agendamento de consultas online, chat criptografado ponta a ponta e compartilhamento controlado de relatórios de gasto energético (MET) para nutricionistas vinculados.
